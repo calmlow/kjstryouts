@@ -1,0 +1,57 @@
+<html>
+<head>
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/knockout-3.1.0.js"></script>
+    <script src="js/mine.js"></script>
+    <script>
+    $(document).ready(function(){
+        ko.applyBindings(myViewModel, $('#menu-top-block')[0]);
+        ko.applyBindings(tableModel, $('#content-input')[0]);
+        ko.applyBindings(leftPaneInstance, $('#mylist')[0]);        
+    });
+    </script>
+</head>
+
+<body>
+
+<div id="menu1">
+    <div id="menu-top-block">
+        The name is <span data-bind="text: personName"></span>
+    </div>
+    <div id="mylist">
+        <table border="1">
+            <tr>
+                <th>Tbl name</th>
+                <th>num fields</th>
+                <th>Action</th>
+            </tr>
+            <tbody data-bind="foreach: tableslist">
+                <tr>
+                    <td nowrap="true">
+                        <span data-bind="text: tableName"></span>
+                    </td>
+                    <td nowrap="true">
+                        <span data-bind='text: numFields'></span>
+                    </td>
+                    <td nowrap="true">
+                        <a href='#' data-bind='click: $root.removeFromList'>Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="content-input">
+    Enter stuff
+    
+    <p>Enter name: <input data-bind="value: tableName"/></p>
+    <p>Number of Fields: <input data-bind="value: numFields"/></p>
+    <p>
+        <button data-bind='click: addTable'>Submit</button>
+    </p>
+</div>
+
+</body>
+</html>
