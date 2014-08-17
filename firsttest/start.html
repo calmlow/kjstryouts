@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset="utf-8">
     <link href="css/styles.css" rel="stylesheet">
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="js/knockout-3.1.0.js"></script>
@@ -7,7 +8,7 @@
     <script>
     $(document).ready(function(){
         ko.applyBindings(myViewModel, $('#menu-top-block')[0]);
-        ko.applyBindings(tableModel, $('#content-input')[0]);
+        ko.applyBindings(tableModelInstance, $('#content-input')[0]);
         ko.applyBindings(leftPaneInstance, $('#mylist')[0]);        
     });
     </script>
@@ -17,25 +18,30 @@
 
 <div id="menu1">
     <div id="menu-top-block">
-        The name is <span data-bind="text: personName"></span>
+        Below is a few tables <span data-bind="text: personName"></span>
     </div>
     <div id="mylist">
+        <p>Senast använda. Senast tillagda</p>
         <table border="1">
             <tr>
-                <th>Tbl name</th>
-                <th>num fields</th>
-                <th>Action</th>
+                <th>ID</th>
+                <th>Table Name</th>
+                <th># Fields</th>
+                <th>Actions</th>
             </tr>
             <tbody data-bind="foreach: tableslist">
                 <tr>
                     <td nowrap="true">
-                        <span data-bind="text: tableName"></span>
+                        <span data-bind="text: tableId"></span>
+                    </td>
+                    <td nowrap="true">
+                        <a href="#" data-bind="click: $root.editTable"><span data-bind="text: tableName"></span></a>
                     </td>
                     <td nowrap="true">
                         <span data-bind='text: numFields'></span>
                     </td>
                     <td nowrap="true">
-                        <a href='#' data-bind='click: $root.removeFromList'>Delete</a>
+                        <a href='#' data-bind='click: $root.removeFromList'>Ta bort</a>
                     </td>
                 </tr>
             </tbody>
@@ -44,13 +50,38 @@
 </div>
 
 <div id="content-input">
+    <form action="#">
     Enter stuff
     
-    <p>Enter name: <input data-bind="value: tableName"/></p>
-    <p>Number of Fields: <input data-bind="value: numFields"/></p>
+    <p>Enter name: <input data-bind="value: tableName"/> <input data-bind="value: tableId" type="text"/></p>
     <p>
-        <button data-bind='click: addTable'>Submit</button>
+        Number of Fields:
+        <select width="50" data-bind="options: numFields, optionsCaption: '-- Select Number of Fields --', value: numFields_selected,"></select>
     </p>
+    <p>
+        Data Fields (Enter the Name for the Field Headers:
+        <div data-bind="foreach: datafields">
+            <div style="float:left; border-right:1px solid black;padding:0px 10px;">
+                <input data-bind="value: dFieldName"/>
+            </div>
+        </div>
+        <div style="clear:both;">&nbsp;</div>
+        <table border="1">
+            <tbody data-bind="foreach: tableRows">
+                <tr data-bind="foreach: cells">
+                    <td nowrap="true">
+                        <span data-bind="text: cellval"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+    <p>
+        <button data-bind='click: addTable'>Submit</button> |
+        <button data-bind='click: appendField'>Add Field --> +</button>
+        <button data-bind='click: appendRow'>Add Row +</button>
+    </p>
+    </form>
 </div>
 
 </body>
